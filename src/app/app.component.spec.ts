@@ -1,29 +1,22 @@
-import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AppComponent } from './app.component';
+import { Component } from '@angular/core';
+import { LocalStorageService } from './local-storage.service';
 
-describe('AppComponent', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [RouterTestingModule],
-    declarations: [AppComponent]
-  }));
+@Component({
+  selector: 'app-root',
+  template: `
+    <button (click)="saveToLocalStorage()">Save to Local Storage</button>
+    <button (click)="retrieveFromLocalStorage()">Retrieve from Local Storage</button>
+  `
+})
+export class AppComponent {
+  constructor(private localStorageService: LocalStorageService) {}
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
+  saveToLocalStorage() {
+    this.localStorageService.setItem('myKey', 'Hello, Local Storage!');
+  }
 
-  it(`should have as title 'storage'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('storage');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('storage app is running!');
-  });
-});
+  retrieveFromLocalStorage() {
+    const value = this.localStorageService.getItem('myKey');
+    console.log(value);
+  }
+}
